@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Data Visualizations</title>
+    <style>
+        img{
+            padding-left: 60px;
+            max-width: 100%;
+        }
+        /* Body styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f7f7f7;
+            font-family: Arial, sans-serif;
+            background-image: url('../static/wimbledon-match.jpg'); /* Add the path to your background image */
+            background-size: cover; /* Adjust the size to cover the entire viewport */
+            background-repeat: no-repeat;
+        }
+
+        .dashboard-title {
+            text-align: center;
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+            margin: 0;
+        }
+
+        .input-label {
+            max-width: 70%;
+            display: block;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .year-dropdown {
+            width: 70%;
+            padding: 10px;
+            margin: 0px 50px;
+            margin-left: 80px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .load-button {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .load-button:hover {
+            background-color: #555;
+        }
+
+        /* Visualization styles */
+        .visualizations-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin: 20px;
+        }
+
+        .visualization {
+            background-color: #fff;
+            width: 48%;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            box-shadow: 2px 2px 5px #ccc;
+        }
+
+        .visualization-title {
+            text-align: center;
+            font-size: 18px;
+            margin: 10px 0;
+        }
+        .selectYear{
+            color: #fff;
+            margin-left: 80px;
+        }
+        .navImg{
+            height: 10px;
+            width: 10px;
+        }
+        /* Loader styles */
+        .loader {
+            display: none;
+            border: 6px solid #f3f3f3;
+            border-top: 6px solid #3498db;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+        }
+
+        .loader.active {
+            display: block;
+        }
+
+    </style>
+    <script>
+        function showLoader() {
+            document.getElementById("loader").classList.add("active");
+        }
+    
+        function hideLoader() {
+            document.getElementById("loader").classList.remove("active");
+        }
+    
+        // Add an event listener to the form to show the loader when it's submitted
+        document.querySelector("form").addEventListener("submit", function () {
+            showLoader();
+        });
+    </script>
+    
+</head>
+<body>
+    <!-- <h1 class="dashboard-title">Lawn Tennis Data Analysis</h1> -->
+    <h1 class="dashboard-title">Lawn Tennis Data Analysis</h1>
+    <div id="loader" class="loader"></div>
+    <form action="/" method="POST" onsubmit="showLoader(); return true;">
+        <label for="year" class="input-label"><p class="selectYear">Select Year</p></label>
+        <select name="year" id="year" class="year-dropdown">
+            <option value="2001">2001</option>
+            <option value="2002">2002</option>
+            <option value="2003">2003</option>
+            <option value="2004">2004</option>
+            <option value="2005">2005</option>
+            <option value="2006">2006</option>
+            <option value="2007">2007</option>
+            <option value="2008">2008</option>
+            <option value="2009">2009</option>
+            <option value="2010">2010</option>
+            <option value="2011">2011</option>
+            <option value="2012">2012</option>
+            <option value="2013">2013</option>
+            <option value="2014">2014</option>
+            <option value="2015">2015</option>
+            <option value="2016">2016</option>
+            <option value="2017">2017</option>
+            <option value="2018">2018</option>
+            <option value="2019">2019</option>
+            <option value="2020">2020</option>
+            <option value="2021">2021</option>
+            <option value="2022">2022</option>
+            <option value="2023">2023</option>
+            <!-- Add more options as needed -->
+        </select>
+        <input type="submit" value="Load Data" class="load-button">
+    </form>
+
+
+    <div class="visualizations-container">
+        {% for i in range(plot_urls|length) %}
+            <div class="visualization">
+                <h2 class="visualization-title">{{ titles[i] }}</h2>
+                <img src="data:image/png;base64,{{ plot_urls[i] }}" alt="Visualization {{ i + 1 }}">
+            </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
