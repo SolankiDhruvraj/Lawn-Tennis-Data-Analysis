@@ -107,8 +107,6 @@ def index():
     plot_urls.append(plot_url)
     titles.append('Tournament Series Distribution')
 
-
-    # Visualize tournament surface distribution
     surface_counts = data['Surface'].value_counts()
 
 # Create a bar plot to visualize the tournament surface distribution
