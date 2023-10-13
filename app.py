@@ -234,7 +234,28 @@ def index():
     plot_urls.append(plot_url)
     titles.append('Distribution of Players Who Lost to Higher Ranked Players')
 
-    
+    # Count the number of matches for each Comment type
+    comment_counts = data['Comment'].value_counts().reset_index()
+    comment_counts.columns = ['Comment Type', 'Match Count']
+
+    # Create a pie chart to visualize Comment counts
+    plt.figure(figsize=(6, 4))
+    plt.pie(comment_counts['Match Count'], labels=comment_counts['Comment Type'], autopct='%1.1f%%')
+    plt.title('Distribution of Match Comment Types')
+    plt.axis('equal')  # Equal aspect ratio ensures a circular pie chart
+
+    # Save the plot to a BytesIO object
+    img = BytesIO()
+    plt.savefig(img, format='png')
+    img.seek(0)
+    plot_url = base64.b64encode(img.getvalue()).decode()
+    plt.close()  # Close the plot to release resources
+
+    # Append the plot URL and title to the appropriate lists
+    plot_urls.append(plot_url)
+    titles.append('Distribution of Match Comment Types')
+
+    # Wins on different surfaces
     surface_wins = data.groupby(['Surface', 'Winner'])['Winner'].count().reset_index(name='Wins')
     surface_wins_pivot = surface_wins.pivot(index='Winner', columns='Surface', values='Wins')
     surface_wins_pivot.fillna(0, inplace=True)
@@ -244,7 +265,7 @@ def index():
     surface_wins_pivot.drop('Total', axis=1, inplace=True)
 
     # Create a grouped bar chart
-    plt.figure(figsize=(6, 4))
+    plt.figure(figsize=(20, 8))
     width = 0.2
     x = range(len(surface_wins_pivot))
 
